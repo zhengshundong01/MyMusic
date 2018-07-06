@@ -1,3 +1,4 @@
+/* eslint-disable comma-spacing,key-spacing */
 import Vue from 'vue'
 import Router from 'vue-router'
 import Rank from 'components/rank/rank'
@@ -9,6 +10,10 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path:'/',
+      redirect:'/recommend'
+    },
     {
       path: '/rank',
       component: Rank
