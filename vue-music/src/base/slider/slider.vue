@@ -13,7 +13,7 @@
 <script type="text/ecmascript-6">
 /* eslint-disable indent,spaced-comment */
 
-  //import {addClass} from 'common/js/dom'
+  import {addClass} from 'common/js/dom'
   import BScroll from 'better-scroll'
 
   export default {
@@ -68,7 +68,7 @@
         let sliderWidth = this.$refs.slider.clientWidth
         for (let i = 0; i < this.children.length; i++) {
           let child = this.children[i]
-          //addClass(child, 'slider-item')
+          addClass(child, 'slider-item')
 
           child.style.width = sliderWidth + 'px'
           width += sliderWidth
