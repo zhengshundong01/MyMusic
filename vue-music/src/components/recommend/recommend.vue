@@ -1,46 +1,50 @@
 <template>
   <div class="recommend">
-    <div class="recommend-content">
-      <div v-if="recommends.length" class="slider-wrapper">
-        <slider>
-          <div v-for="(item,index) in recommends" :key="index">
-            <a :href="item.linkUrl">
-              <img :src="item.picUrl"/>
-            </a>
-          </div>
-        </slider>
-      </div>
-      <div class="recommend-list">
-        <h1 class="list-title">热门歌单推荐</h1>
-        <ul>
-          <li class="item" v-for="(item, index) in discList" :key="index">
-            <div class="icon">
-              <img :src="item.imgurl" width="60" height="60">
+    <scroll ref="scroll" class="recommend-content" :data="discList">
+      <div>
+        <div v-if="recommends.length" class="slider-wrapper">
+          <slider>
+            <div v-for="(item,index) in recommends" :key="index">
+              <a :href="item.linkUrl">
+                <img class="needsclick" @load="loadImg" :src="item.picUrl"/>
+              </a>
             </div>
-            <div class="text">
-              <h2 class="name" v-html="item.creator.name"></h2>
-              <p class="desc" v-html="item.dissname"></p>
-            </div>
-          </li>
-        </ul>
+          </slider>
+        </div>
+        <div class="recommend-list">
+          <h1 class="list-title">热门歌单推荐</h1>
+          <ul>
+            <li class="item" v-for="(item, index) in discList" :key="index">
+              <div class="icon">
+                <img v-lazy="item.imgurl" width="60" height="60">
+              </div>
+              <div class="text">
+                <h2 class="name" v-html="item.creator.name"></h2>
+                <p class="desc" v-html="item.dissname"></p>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </scroll>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-/* eslint-disable indent */
+/* eslint-disable indent,no-dupe-keys */
 
   import { getRecommend, getDiscList } from 'api/recommend'
   import { ERR_OK } from 'api/config'
   import Slider from 'base/slider/slider.vue'
+  import Scroll from 'base/scroll/scroll'
 
   export default {
     components: {Slider},
     data () {
       return {
         recommends: {},
-        discList: []
+        discList: [],
+        checkLoaded: false
       }
     },
     created () {
@@ -61,7 +65,16 @@
             this.discList = res.data.list
           }
         })
+      },
+      loadImg () {
+        if (!this.checkLoaded) {
+          this.$refs.scroll.refresh()
+          this.checkLoaded = true
+        }
       }
+    },
+    components: {
+      Scroll
     }
   }
 </script>
